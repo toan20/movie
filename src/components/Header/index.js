@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 
 function Header() {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" className="bg-dark navbar-dark">
             <Container>
                 <Navbar.Brand href="/">Movie</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -22,7 +22,12 @@ function Header() {
                             <NavDropdown.Item href="#action/3.3">Thái Lan</NavDropdown.Item>
                         </NavDropdown>
                         <Form className="d-flex">
-                            <Form.Control type="search" placeholder="Search" className="me-2" aria-label="Search" />
+                            <Form.Control
+                                type="search"
+                                placeholder="Tìm kiếm"
+                                className="me-2 bg-dark border border-secondary  "
+                                aria-label="Search"
+                            />
                             <Button variant="outline-success">Search</Button>
                         </Form>
                     </Nav>

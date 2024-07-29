@@ -40,3 +40,46 @@
     color: #dacb46;
     cursor: pointer;
 }
+.tab-moive {
+    width: 100%;
+    background-color: black;
+}
+.tab-body {
+    width: 100%;
+}
+.tab-content {
+    width: 100%;
+    border-bottom: 1px dashed #555;
+    margin-top: 5px;
+}
+.tab-img {
+    width: 50px;
+    margin-top: -40px;
+}
+.tab-title {
+    display: inline-block;
+    width: 70%;
+}
+.tab-title-vn {
+    color: #ddd;
+    white-space: nowrap; /* Ngăn văn bản xuống dòng */
+    overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
+    text-overflow: ellipsis;
+    margin: 5px;
+    margin-left: 15px;
+}
+.tab-title-vn:hover {
+    cursor: pointer;
+    color: #dacb46;
+}
+.tab-title-en {
+    color: #666;
+    padding-top: 2px;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    margin: 5px;
+    margin-left: 15px;
+}
