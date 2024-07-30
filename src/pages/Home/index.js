@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import { Link } from 'react-router-dom';
 
 const tabs = ['hanh-dong', 'hoat-hinh', 'kinh-di'];
 function Home() {
@@ -47,16 +48,16 @@ function Home() {
                     <div className="row">
                         {data.items.map((item, index) => (
                             <div key={index} className="col-lg-3 mt-5">
-                                <a>
-                                    <div className="block-wrapper">
-                                        <div className="movie-thumb">
-                                            <img className="img" src={item.thumb_url}></img>
-                                        </div>
-                                        <div className="movie-title">
-                                            <span>{item.name}</span>
-                                        </div>
+                                <div className="block-wrapper">
+                                    <div className="movie-thumb">
+                                        <img alt={item.name} className="img" src={item.thumb_url}></img>
                                     </div>
-                                </a>
+                                    <div className="movie-title">
+                                        <Link className="movie-title" to={`/movie/${item.slug}`}>
+                                            {item.name}
+                                        </Link>
+                                    </div>
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -83,10 +84,13 @@ function Home() {
                             <div className="tab-body">
                                 {tabContent.items.map((item, index) => (
                                     <div key={index} className="tab-content">
-                                        <img className="tab-img" src={item.thumb_url}></img>
+                                        <img alt={item.name} className="tab-img" src={item.thumb_url}></img>
 
                                         <div className="tab-title">
-                                            <p className="tab-title-vn">{item.name}</p>
+                                            <Link className="tab-title-vn" to={`/movie/${item.slug}`}>
+                                                {item.name}
+                                            </Link>
+
                                             <p className="tab-title-en">{item.original_name}</p>
                                         </div>
                                     </div>

@@ -1,3 +1,4 @@
+/* **************** Home*********************** */
 .title {
     color: #dacb46;
     text-shadow: 1px 1px 1px #1a1a1a;
@@ -30,6 +31,8 @@
 }
 
 .movie-title {
+    text-decoration: none; /* Bỏ gạch chân */
+    color: inherit;
     white-space: nowrap; /* Ngăn văn bản xuống dòng */
     overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
     text-overflow: ellipsis;
@@ -59,8 +62,11 @@
 .tab-title {
     display: inline-block;
     width: 70%;
+    overflow: hidden;
 }
 .tab-title-vn {
+    text-decoration: none; /* Bỏ gạch chân */
+    /* color: inherit; */
     color: #ddd;
     white-space: nowrap; /* Ngăn văn bản xuống dòng */
     overflow: hidden; /* Ẩn phần văn bản vượt quá kích thước */
@@ -79,7 +85,13 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
     margin: 5px;
     margin-left: 15px;
+}
+/* ************************ Moive Detail***************************** */
+.detail-img {
+    height: 50%;
+}
+.test {
+    color: white;
 }
