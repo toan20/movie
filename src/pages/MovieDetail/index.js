@@ -1,7 +1,44 @@
 import Header from '../../components/Header';
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import axiosRetry from 'axios-retry';
+import { Link } from 'react-router-dom';
 function MovieDetail() {
-    console.log(useParams());
+    const { slug } = useParams();
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    axiosRetry(axios, {
+        retries: 3, // Số lần thử lại
+        retryDelay: (retryCount) => {
+            return retryCount * 2000; // Thời gian chờ giữa các lần thử lại (2s, 4s, 6s, ...)
+        },
+        retryCondition: (error) => {
+            // Thử lại chỉ khi gặp lỗi 429
+            return error.response.status === 429;
+        },
+    });
+    useEffect(() => {
+        axios
+            .get(` https://phim.nguonc.com/api/film/${slug}`)
+            .then((response) => {
+                setData(response.data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error);
+                setLoading(false);
+            });
+    }, []);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+    console.log(data.movie.episodes[0].items);
     return (
         <div className="bg-secondary">
             <Header />
@@ -9,43 +46,38 @@ function MovieDetail() {
                 <div className="row">
                     <div
                         style={{
-                            backgroundImage: `url(https://phim.nguonc.com/public/images/Film/hoa-thien-cot-co-trang-2015-poster.jpg)`,
+                            height: '500px',
+                            backgroundImage: `url(${data.movie.poster_url})`,
                         }}
                         className=" background col-lg-12"
-                    >
-                        <div className="row">
-                            <div className=" col-lg-4 d-flex justify-content-center align-items-center">
-                                <img
-                                    alt="123"
-                                    className="detail-img"
-                                    src="https://phim.nguonc.com/public/images/Film/hoa-thien-cot-co-trang-2015-thumb.jpg"
-                                ></img>
-                            </div>
-                            <div
-                                style={{ marginTop: '195px' }}
-                                className="detail-title col-lg-8 d-flex flex-column justify-space-between "
-                            >
-                                <span className="title">Phim đề cử</span>
-                                <span>jaskhdajkshdasjkhdaksjhd</span>
-                            </div>
-                        </div>
+                    ></div>
+                </div>
+                <div className="row mt-5">
+                    <div className="col-lg-12">
+                        <span className="title">{data.movie.name}</span>
+                    </div>
+                    <div className="col-lg-12">
+                        <span style={{ color: 'white' }}>{data.movie.original_name}</span>
                     </div>
                 </div>
-                <div className="row">
+                <div className="row mt-5">
                     <div className="col-lg-12">
                         <p className="test">Tập phim :</p>
-
-                        <button>1</button>
+                        {data.movie.episodes[0].items.map((item, index) => (
+                            <Link key={index} to={item.embed}>
+                                <button>{item.name}</button>
+                            </Link>
+                        ))}
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-lg-6">
                         <div className="row mt-3 ">
                             <div className="col-lg-4 d-flex justify-content-end">
-                                <p className="test">Trạng thái :</p>
+                                <p className="test">Tổng tập :</p>
                             </div>
                             <div className="col-lg-8">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.total_episodes}</p>
                             </div>
                         </div>{' '}
                         <div className="row ">
@@ -53,7 +85,7 @@ function MovieDetail() {
                                 <p className="test">Thời lượng :</p>
                             </div>
                             <div className="col-lg-8">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.time}</p>
                             </div>
                         </div>{' '}
                         <div className="row  ">
@@ -61,7 +93,7 @@ function MovieDetail() {
                                 <p className="test">Chất lượng :</p>
                             </div>
                             <div className="col-lg-8 d-flex">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.quality}</p>
                             </div>
                         </div>
                         <div className="row  ">
@@ -69,7 +101,7 @@ function MovieDetail() {
                                 <p className="test">Quốc gia :</p>
                             </div>
                             <div className="col-lg-8 d-flex">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.category[4].list[0].name}</p>
                             </div>
                         </div>
                     </div>
@@ -79,7 +111,7 @@ function MovieDetail() {
                                 <p className="test">Đạo diễn :</p>
                             </div>
                             <div className="col-lg-8">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.director}</p>
                             </div>
                         </div>{' '}
                         <div className="row ">
@@ -87,23 +119,15 @@ function MovieDetail() {
                                 <p className="test">Diễn viên :</p>
                             </div>
                             <div className="col-lg-8">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.casts}</p>
                             </div>
                         </div>{' '}
-                        <div className="row  ">
-                            <div className="col-lg-4 d-flex justify-content-end">
-                                <p className="test">Trạng thái :</p>
-                            </div>
-                            <div className="col-lg-8 d-flex">
-                                <p className="test">932084</p>
-                            </div>
-                        </div>
                         <div className="row  ">
                             <div className="col-lg-4 d-flex justify-content-end">
                                 <p className="test">Năm :</p>
                             </div>
                             <div className="col-lg-8 d-flex">
-                                <p className="test">932084</p>
+                                <p className="test">{data.movie.category[3].list[0].name}</p>
                             </div>
                         </div>
                     </div>
@@ -111,13 +135,7 @@ function MovieDetail() {
                 <div className="row">
                     <div className="col-lg-12">
                         <p className="test">Nội dung phim :</p>
-                        <p className="test">
-                            Hoa Thiên Cốt: Là chuyện tình đặc biệt của sư đồ Bạch Tử Họa và Hoa Thiên Cốt, phim được lấy
-                            ý tưởng từ tác phẩm ngôn tình nổi tiếng của tác giả Fresh Quả Quả hiện đang được sự chú ý
-                            của khán giả hâm mộ cuốn tiểu thuyết này.Nội dung bộ phim xoay quanh cuộc sống của các môn
-                            sinh trong một học đường do Chương Tứ Duy sáng lập ra, vì muốn đem kiến thức của mình truyền
-                            bá rộng rãi cho mọi người giúp ích cho xã hội.
-                        </p>
+                        <p className="test">{data.movie.description}</p>
                     </div>
                 </div>
             </div>

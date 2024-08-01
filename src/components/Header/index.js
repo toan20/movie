@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 
 function Header() {
     return (
@@ -13,8 +14,12 @@ function Header() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/">Trang chủ</Nav.Link>
-                        <Nav.Link href="#link">Phim lẻ</Nav.Link>
+                        <Nav.Link as={Link} to="/">
+                            Trang chủ
+                        </Nav.Link>
+                        <Nav.Link as={Link} to="/phimle">
+                            Phim lẻ
+                        </Nav.Link>
                         <Nav.Link href="#link">Phim bộ</Nav.Link>
                         <NavDropdown title="Quốc gia" id="basic-nav-dropdown">
                             <NavDropdown.Item href="#action/3.1">Việt Nam</NavDropdown.Item>

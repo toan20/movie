@@ -95,3 +95,10 @@
 .test {
     color: white;
 }
+
+/* ******************************* */
+.footer {
+    height: auto;
+    padding: 20px 25px 15px;
+    border-top: 3px solid #dacb46;
+}

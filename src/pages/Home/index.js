@@ -1,9 +1,11 @@
 import Header from '../../components/Header';
+import Footer from '../../components/Footer';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { Link } from 'react-router-dom';
+import axiosRetry from 'axios-retry';
 
 const tabs = ['hanh-dong', 'hoat-hinh', 'kinh-di'];
 function Home() {
@@ -12,6 +14,16 @@ function Home() {
     const [error, setError] = useState(null);
     const [type, setType] = useState('kinh-di');
     const [tabContent, setTabcontent] = useState([]);
+    axiosRetry(axios, {
+        retries: 3, // Số lần thử lại
+        retryDelay: (retryCount) => {
+            return retryCount * 2000; // Thời gian chờ giữa các lần thử lại (2s, 4s, 6s, ...)
+        },
+        retryCondition: (error) => {
+            // Thử lại chỉ khi gặp lỗi 429
+            return error.response.status === 429;
+        },
+    });
     useEffect(() => {
         axios.get(`https://phim.nguonc.com/api/films/the-loai/${type}`).then((response) => {
             setTabcontent(response.data);
@@ -100,6 +112,7 @@ function Home() {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }
